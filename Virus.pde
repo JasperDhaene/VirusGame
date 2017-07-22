@@ -119,6 +119,7 @@ class Virus
   public boolean isHit(){
     if(abs(v_posX - mouseX) < imageWidth && abs(v_posY - mouseY) < imageHeight){
       return true;
+    }
     return false;
   }
   //get posX and posY of the random virus, 
