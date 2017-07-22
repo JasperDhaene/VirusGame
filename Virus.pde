@@ -1,57 +1,40 @@
 class Virus 
 {
-  PImage v_friend, v_neutral, v_enemy;
-  int v_powerF, v_powerE, v_powerN;
+  PImage v_virusImage;
+  int v_power;
   int v_timer;
+  int v_type;
   //pos X&Y voor N(eutral)
-  float v_posN_X, v_posN_Y;
+  float v_posX, v_posY;
   boolean mouseDrag;
 
-  Virus()
+  Virus(int virusType)
   {
     v_timer = 0;
-    v_powerF = 50;
-    v_powerE= -50;
-    v_posN_X= random(50, 1150);
-    v_posN_Y = random(50, 550);
+
+    v_type = virusType;
+    if(virusType == m_neutral){
+      v_posX= random(50, 1150);
+      v_posY = random(50, 550);
+      v_power = 0;
+    }else if(virusType == m_friend){
+      v_posX = width-100;
+      v_posY = 100;
+      v_power = 50;
+    }else if(virusType == m_enemy){
+      v_posX = 100;
+      v_posY = height-100;
+      v_power = -50;
+    }
+    v_virusImage = loadImage("virusforms.png");
+    
   }
   public void update() //updates per seconde
   {
     v_timer++;
     if (v_timer == 60)
     {
-      if (v_powerF > 0) { 
-        v_powerF++;
-      } 
-      if (v_powerF == 0) {
-        v_powerF = 0;
-      } 
-      if (v_powerF < 0) {
-        v_powerF--;
-      }
-      //-------------------------------//
-      
-      if (v_powerN > 0) { 
-        v_powerN++;
-      } 
-      if (v_powerN == 0) {
-        v_powerN = 0;
-      } 
-      if (v_powerN < 0) {
-        v_powerN--;
-      }
-      //-------------------------------//
-
-      if (v_powerE < 0) { 
-        v_powerE--;
-      } 
-      if (v_powerE == 0) {
-        v_powerE = 0;
-      } 
-      if (v_powerE > 0) {
-        v_powerE++;
-      }
-
+      v_power += v_type;
       v_timer = 0;
     }
   }
@@ -60,59 +43,24 @@ class Virus
     //array (friend, enemy, neutral 1-6)
     //if(power > 0, color red), if 0, grey, if < 0, blue) is de ideaal.
 
-
     imageMode(CENTER);
     textAlign(CENTER);
     textSize(15);
-    v_friend = loadImage("virusforms.png");
-    v_neutral = loadImage("virusforms.png");
-    v_enemy = loadImage("virusforms.png");
+    
     // (img, posX, posY, size, size, pixelstartX, pixelstartY, pixelendX, pixelendY)
 
-    //friend
-    if (v_powerF > 0) {
-      image(v_friend, width-100, 100, 100, 100, 200, 0, 300, 100);
-    } 
-    if (v_powerF == 0)
-    {
-      image(v_neutral, width-100, 100, 100, 100, 0, 0, 100, 100);
+    
+    if(v_type == m_neutral){
+      image(v_virusImage, v_posX, v_posY, 50, 50, 0,0,100,100);
     }
-    if ( v_powerF < 0) 
-    { 
-      image(v_enemy, width-100, 100, 100, 100, 100, 0, 200, 100);
+    if(v_type == m_friend){
+      image(v_virusImage, v_posX, v_posY, 100, 100, 200, 0, 300, 100);
     }
-    text(v_powerF, width-101, 106);
-
-    //-------------------------------//
-    //neutral
-   // image(v_neutral, v_posN_X, v_posN_Y, 50, 50, 0, 0, 100, 100);
-    if (v_powerN > 0) {
-      image(v_friend, 100, height-100, 100, 100,  0, 0, 100, 100);
-    } 
-    if (v_powerN == 0)
-    {
-      image(v_neutral, v_posN_X, v_posN_Y, 50, 50, 0, 0, 100, 100);
+    if(v_type == m_enemy){
+      image(v_virusImage, v_posX, v_posY, 100, 100, 100, 0, 200, 100);
     }
-    if ( v_powerN < 0) 
-    { 
-      image(v_enemy, 100, height-100, 100, 100, 0, 0, 100, 100);
-    } 
-
-    //-------------------------------//
-    //enemy
-    //image(v_enemy, 100, height-100, 100, 100, 100, 0, 200, 100);
-    if (v_powerE < 0) {
-      image(v_enemy, 100, height-100, 100, 100, 100, 0, 200, 100);
-    } 
-    if (v_powerE == 0)
-    {
-      image(v_enemy, 100, height-100, 100, 100, 0, 0, 100, 100);
-    }
-    if ( v_powerE > 0) 
-    { 
-      image(v_enemy, 100, height-100, 100, 100, 200, 0, 300, 100);
-    }
-    text(v_powerE, 99, height-94);
+    
+    text(v_power, v_posX, v_posY);
   }
 
   public void hitTest()
@@ -151,10 +99,10 @@ class Virus
       }
       //-------------------------------//
       //neutral
-      if ( mouseX > v_posN_X-25 && mouseX < v_posN_X + 25 &&  mouseY > v_posN_Y - 25 && mouseY < v_posN_Y + 25) 
+      if ( mouseX > v_posX-25 && mouseX < v_posX + 25 &&  mouseY > v_posY - 25 && mouseY < v_posY + 25) 
       {
         //println("NEUTRAL");
-        ellipse(v_posN_X, v_posN_Y, 75, 75);
+        ellipse(v_posX, v_posY, 75, 75);
       } else {
         //println("no3");
       }
@@ -163,10 +111,10 @@ class Virus
   //get posX and posY of the random virus, 
   public float getPosX()
   {
-    return v_posN_X;
+    return v_posX;
   }
   public float getPosY()
   {
-    return v_posN_Y;
+    return v_posY;
   }
 }
