@@ -17,6 +17,8 @@ public static final int m_enemy = -1;
 private float m_mouseOriginX;
 private float m_mouseOriginY;
 
+private boolean hitDetected;
+
 void setup()
 {
   size(1200, 600);
@@ -49,7 +51,7 @@ private void render(){
   for(int i = 0; i<virusList.size();i++){
     virusList.get(i).display();
   }
-  if(mousePressed == true){
+  if(mousePressed == true && hitDetected){
     stroke(255);
     line(m_mouseOriginX,m_mouseOriginY,mouseX,mouseY);
   }
@@ -57,11 +59,18 @@ private void render(){
 
 void mousePressed() {
   if (mouseButton == LEFT) {
-    m_mouseOriginX = mouseX;
-    m_mouseOriginY = mouseY;
+    for(int i = 0; i<virusList.size();i++){
+      if(virusList.get(i).isHit()){
+        m_mouseOriginX = mouseX;
+        m_mouseOriginY = mouseY;
+        hitDetected = true;
+      }
+    }
+    
   }
 }
 void mouseReleased() {
     m_mouseOriginX = 0;
     m_mouseOriginY = 0;
+    hitDetected = false;
 }
