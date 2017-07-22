@@ -14,6 +14,9 @@ public static final int m_neutral = 0;
 public static final int m_friend = 1;
 public static final int m_enemy = -1;
 
+private float m_mouseOriginX;
+private float m_mouseOriginY;
+
 void setup()
 {
   size(1200, 600);
@@ -32,8 +35,6 @@ void draw()
   update();
   render();
   
-  //v1.update();
-  //v1.virusDetection();
 }
 
 private void update(){
@@ -48,4 +49,19 @@ private void render(){
   for(int i = 0; i<virusList.size();i++){
     virusList.get(i).display();
   }
+  if(mousePressed == true){
+    stroke(255);
+    line(m_mouseOriginX,m_mouseOriginY,mouseX,mouseY);
+  }
+}
+
+void mousePressed() {
+  if (mouseButton == LEFT) {
+    m_mouseOriginX = mouseX;
+    m_mouseOriginY = mouseY;
+  }
+}
+void mouseReleased() {
+    m_mouseOriginX = 0;
+    m_mouseOriginY = 0;
 }
