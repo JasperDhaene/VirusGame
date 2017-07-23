@@ -4,10 +4,10 @@ class Virus
   int v_power;
   int v_timer;
   int v_type;
-  //pos X&Y voor N(eutral)
   float v_posX, v_posY;
   int imageWidth, imageHeight;
   boolean mouseDrag;
+  boolean v_clicked;
 
   Virus(int virusType)
   {
@@ -34,6 +34,7 @@ class Virus
       imageHeight = 50;
     }
     v_virusImage = loadImage("virusforms.png");
+    v_clicked = false;
     
   }
   public void update() //updates per seconde
@@ -47,16 +48,11 @@ class Virus
   }
   public void display()
   {
-    //array (friend, enemy, neutral 1-6)
-    //if(power > 0, color red), if 0, grey, if < 0, blue) is de ideaal.
-
     imageMode(CENTER);
     textAlign(CENTER);
     textSize(15);
     
     // (img, posX, posY, size, size, pixelstartX, pixelstartY, pixelendX, pixelendY)
-
-    
     if(v_type == m_neutral){
       image(v_virusImage, v_posX, v_posY, 50, 50, 0,0,100,100);
     }
@@ -68,51 +64,12 @@ class Virus
     }
     
     text(v_power, v_posX, v_posY);
-  }
-
-  public void hitTest()
-  {
-    //mousepressed/mousereleased
-    //draw line vanuit hoofdvirus, if released op neutral, v_PowerF(of E)/2, neutral word F of E
-  }
-
-
-  void virusDetection()//test methode
-  {
-    ellipseMode(CENTER);
-    noFill();
-    strokeWeight(6);
-    stroke(255, 255, 255);
-
-    //Printlns zijn om de hitdetectie te testen
-    //enemy
-    if (mousePressed == true) 
-    {
-      if ( mouseX > 50 && mouseX < 150 &&  mouseY > height-150 && mouseY < height-50) 
-      {
-        //println("ENEMY");
-        ellipse(100, height-100, 120, 120);
-      } else {
-        //println("no1");
-      }
-      //-------------------------------//
-      //friend
-      if ( mouseX > width - 150 && mouseX < width-50 &&  mouseY > 50 && mouseY < 150) 
-      {
-        //println("FRIEND");
-        ellipse(width-100, 100, 120, 120);
-      } else {
-        //println("no2");
-      }
-      //-------------------------------//
-      //neutral
-      if ( mouseX > v_posX-25 && mouseX < v_posX + 25 &&  mouseY > v_posY - 25 && mouseY < v_posY + 25) 
-      {
-        //println("NEUTRAL");
-        ellipse(v_posX, v_posY, 75, 75);
-      } else {
-        //println("no3");
-      }
+    if(v_clicked){
+      ellipseMode(CENTER);
+      noFill();
+      strokeWeight(6);
+      stroke(255, 255, 255);
+      ellipse(v_posX, v_posY, 60*abs(v_type) + 60, 60*abs(v_type) + 60);
     }
   }
   
@@ -150,5 +107,9 @@ class Virus
   }
   public void addPower(int newPower){
     v_power += newPower;
+  }
+  
+  public void setClicked(boolean clicked){
+    v_clicked = clicked;
   }
 }

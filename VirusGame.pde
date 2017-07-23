@@ -60,6 +60,7 @@ void mousePressed() {
         m_mouseOriginY = mouseY;
         lineDrawn = true;
         m_virusOriginIndex = i;
+        virusList.get(i).setClicked(true);
       }
     }
     
@@ -69,6 +70,7 @@ void mouseReleased() {
     m_mouseOriginX = 0;
     m_mouseOriginY = 0;
     lineDrawn = false;
+    virusList.get(m_virusOriginIndex).setClicked(false);
     
     //hit detection/resolve on virusses
     for(int i = 0; i<virusList.size();i++){
