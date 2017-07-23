@@ -15,12 +15,16 @@ public static final int splitRatio = 2;
 
 private boolean gameOver = false;
 
+private int amountFriend = 2;
+private int amountEnemy = 1;
+private int amountNeutral = 2;
+
 void setup()
 {
   size(1200, 600);
   background(0, 0, 0);
   virusList = new ArrayList<Virus>();
-  generateVirusses(4,2,1);
+  generateVirusses(amountNeutral,amountFriend,amountEnemy);
 }
 
 
@@ -29,7 +33,11 @@ void draw()
 {
   background(0, 0, 0);
   update();
-  checkGameOver();
+  if(!gameOver){
+    checkGameOver();
+  }else{
+    checkInput();
+  }
   render();
   
 }
@@ -44,11 +52,15 @@ private void update(){
 private void render(){
   if(gameOver){
     fill(255, 255, 255);
-    textSize(50);
+    textSize(200);
     textAlign(CENTER);
     text("GG EZ boii", width/2, height/2);
-    textSize(20);
+    textSize(40);
     text("pliz come again", width/2, height/2+50);
+    textSize(13);
+    text("(press any bloody key to get this show on the road again)", width/2, height-20);
+    textSize(9);
+    text("now with more virusses included!", width/2, height-10);
   }else{
     //render virusses
     for(int i = 0; i<virusList.size();i++){
@@ -93,8 +105,6 @@ void mouseReleased() {
 void transferPower(int virusOriginIndex, int virusTargetIndex){
   //virus should not transfer power to itself
   if(virusOriginIndex == virusTargetIndex) return;
-  println("origin: "+virusOriginIndex);
-  println("origin: "+virusTargetIndex);
   
    Virus virusOrigin = virusList.get(virusOriginIndex);
    Virus virusDestiny = virusList.get(virusTargetIndex);
@@ -130,4 +140,18 @@ void generateVirusses(int amountNeutral,int amountFriendly,int amountEnemy){
   for(int i = 0;i<amountEnemy;i++){
     virusList.add(new Virus(m_enemy));
   }
+}
+
+void checkInput(){
+  if(keyPressed == true){
+    startNewGame();  
+  }
+}
+
+void startNewGame(){
+  gameOver = false;
+  amountNeutral ++;
+  amountFriend ++;
+  amountEnemy ++;
+  generateVirusses(amountNeutral,amountFriend,amountEnemy);
 }
