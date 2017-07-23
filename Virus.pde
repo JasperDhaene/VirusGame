@@ -18,20 +18,20 @@ class Virus
       v_posX= random(50, 1150);
       v_posY = random(50, 550);
       v_power = 0;
-      imageWidth = 50;
-      imageHeight = 50;
+      imageWidth = 25;
+      imageHeight = 25;
     }else if(virusType == m_friend){
       v_posX = width-100;
       v_posY = 100;
       v_power = 50;
-      imageWidth = 100;
-      imageHeight = 100;
+      imageWidth = 50;
+      imageHeight = 50;
     }else if(virusType == m_enemy){
       v_posX = 100;
       v_posY = height-100;
       v_power = -50;
-      imageWidth = 100;
-      imageHeight = 100;
+      imageWidth = 50;
+      imageHeight = 50;
     }
     v_virusImage = loadImage("virusforms.png");
     
@@ -116,6 +116,15 @@ class Virus
     }
   }
   
+  public void checkPower(){
+    if(v_power > 0){
+      v_type = m_friend;
+    }
+    if(v_power < 0){
+      v_type = m_enemy;
+    }
+  }
+  
   public boolean isHit(){
     if(abs(v_posX - mouseX) < imageWidth && abs(v_posY - mouseY) < imageHeight){
       return true;
@@ -130,5 +139,16 @@ class Virus
   public float getPosY()
   {
     return v_posY;
+  }
+  
+  public int getPower(){
+    return v_power;
+  }
+  
+  public void setPower(int newPower){
+    v_power = newPower;
+  }
+  public void addPower(int newPower){
+    v_power += newPower;
   }
 }
