@@ -112,4 +112,8 @@ class Virus
   public void setClicked(boolean clicked){
     v_clicked = clicked;
   }
+  
+  public int getType(){
+    return v_type;
+  }
 }

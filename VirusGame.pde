@@ -13,6 +13,8 @@ private int m_virusOriginIndex;
 
 public static final int splitRatio = 2;
 
+private boolean gameOver = false;
+
 void setup()
 {
   size(1200, 600);
@@ -29,6 +31,7 @@ void draw()
 {
   background(0, 0, 0);
   update();
+  checkGameOver();
   render();
   
 }
@@ -41,14 +44,23 @@ private void update(){
 }
 
 private void render(){
-  //render virusses
-  for(int i = 0; i<virusList.size();i++){
-    virusList.get(i).display();
-  }
-  if(mousePressed == true && lineDrawn){
-    strokeWeight(5);
-    stroke(255);
-    line(m_mouseOriginX,m_mouseOriginY,mouseX,mouseY);
+  if(gameOver){
+    fill(255, 255, 255);
+    textSize(50);
+    textAlign(CENTER);
+    text("GG EZ boii", width/2, height/2);
+    textSize(20);
+    text("pliz come again", width/2, height/2+50);
+  }else{
+    //render virusses
+    for(int i = 0; i<virusList.size();i++){
+      virusList.get(i).display();
+    }
+    if(mousePressed == true && lineDrawn){
+      strokeWeight(5);
+      stroke(255);
+      line(m_mouseOriginX,m_mouseOriginY,mouseX,mouseY);
+    }
   }
 }
 
@@ -95,4 +107,14 @@ void transferPower(int virusOriginIndex, int virusDestinyIndex){
    virusDestiny.addPower(newPower);
    
    virusDestiny.checkPower();
+}
+
+void checkGameOver(){
+  int virusType = virusList.get(0).getType();
+  for(int i = 0; i<virusList.size();i++){
+     if(virusList.get(i).getType() != virusType){
+       return;
+     }
+  }
+  gameOver = true;
 }
