@@ -21,14 +21,14 @@ class Virus
       imageWidth = 25;
       imageHeight = 25;
     }else if(virusType == m_friend){
-      v_posX = width-100;
-      v_posY = 100;
+      v_posX = random(width/2, width - 100);
+      v_posY = random(100, height/2);
       v_power = 50;
       imageWidth = 50;
       imageHeight = 50;
     }else if(virusType == m_enemy){
-      v_posX = 100;
-      v_posY = height-100;
+      v_posX = random(100, width/2);
+      v_posY = random(height/2,height-100);
       v_power = -50;
       imageWidth = 50;
       imageHeight = 50;

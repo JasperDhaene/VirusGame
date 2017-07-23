@@ -20,9 +20,7 @@ void setup()
   size(1200, 600);
   background(0, 0, 0);
   virusList = new ArrayList<Virus>();
-  virusList.add(new Virus(m_neutral));
-  virusList.add(new Virus(m_friend));
-  virusList.add(new Virus(m_enemy));
+  generateVirusses(4,2,1);
 }
 
 
@@ -92,12 +90,14 @@ void mouseReleased() {
     }
 }
 
-void transferPower(int virusOriginIndex, int virusDestinyIndex){
+void transferPower(int virusOriginIndex, int virusTargetIndex){
   //virus should not transfer power to itself
-  if(virusOriginIndex == virusDestinyIndex) return;
+  if(virusOriginIndex == virusTargetIndex) return;
+  println("origin: "+virusOriginIndex);
+  println("origin: "+virusTargetIndex);
   
    Virus virusOrigin = virusList.get(virusOriginIndex);
-   Virus virusDestiny = virusList.get(virusDestinyIndex);
+   Virus virusDestiny = virusList.get(virusTargetIndex);
    
    //neutral virus can't transfer anything
    if(virusOrigin.getPower() == 0) return;
@@ -117,4 +117,17 @@ void checkGameOver(){
      }
   }
   gameOver = true;
+}
+
+void generateVirusses(int amountNeutral,int amountFriendly,int amountEnemy){
+  virusList.clear();
+  for(int i = 0;i<amountNeutral;i++){
+    virusList.add(new Virus(m_neutral));
+  }
+  for(int i = 0;i<amountFriendly;i++){
+    virusList.add(new Virus(m_friend));
+  }
+  for(int i = 0;i<amountEnemy;i++){
+    virusList.add(new Virus(m_enemy));
+  }
 }
